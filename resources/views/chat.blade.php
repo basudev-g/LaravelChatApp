@@ -8,21 +8,27 @@
     <meta name="csrf-token" content="{{csrf_token()}}">
     @vite(['resources/js/app.js'])
     <title>Document</title>
+    <style>
+        .list-group {
+            overflow-y: scroll;
+            height: 300px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container my-3" id="app">
         <div class="row">
-            <ul class="col-4 offset-4 list-group">
-                <li class="list-group-item active" aria-current="true">Chat Room</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-                <input type="text" name="message" placeholder="Type your message here...">
-            </ul>
+            <div class="col-4 offset-4">
+                <h2 class="bg-primary text-white">Chat Room</h2>
+                <ul class="list-group">
+                    <message v-for="value in chat.message">
+                        @{{value}}
+                    </message>
+                </ul>
+                <input type="text" v-model="message" @keyup.enter="send" class="form-control" placeholder="Type your message here...">
+            </div>
         </div>
     </div>
 </body>
-
 </html>
