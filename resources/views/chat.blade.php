@@ -20,9 +20,9 @@
     <div class="container my-3" id="app">
         <div class="row">
             <div class="col-4 offset-4">
-                <h2 class="bg-primary text-white">Chat Room</h2>
+                <h1 class="bg-primary text-white p-2">Chat Room</h1>
                 <ul class="list-group">
-                    <message v-for="value in chat.message">
+                    <message v-for="value in chat.message" color="success">
                         @{{value}}
                     </message>
                 </ul>
