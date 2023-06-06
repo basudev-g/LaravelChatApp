@@ -23,7 +23,7 @@
                 <h1 class="bg-primary text-white p-2">Chat Room</h1>
                 <div class="badge badge-pill bg-primary">@{{typing}}</div>
                 <ul class="list-group">
-                    <message v-for="value,index in chat.message" :key=value.index :color=chat.color[index] :user = chat.user[index]>
+                    <message v-for="value,index in chat.message" :key=value.index :color=chat.color[index] :user = chat.user[index] :time=chat.time[index]>
                         @{{value}}
                     </message>
                 </ul>

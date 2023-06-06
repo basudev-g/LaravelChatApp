@@ -10,6 +10,7 @@ const app = createApp({
                 message: [],
                 user: [],
                 color: [],
+                time: [],
             },
             typing: '',
         }
@@ -19,7 +20,7 @@ const app = createApp({
         message() {
             Echo.private(`chat`)
                 .whisper('typing', {
-                    message: this.message
+                    name: this.message
                 });
         }
     },
@@ -30,6 +31,7 @@ const app = createApp({
                 this.chat.message.push(this.message);
                 this.chat.user.push('You');
                 this.chat.color.push('success');
+                this.chat.time.push(this.getTime());
                 axios.post('/send', {
                     message: this.message,
                 })
@@ -41,6 +43,12 @@ const app = createApp({
                         console.log(error);
                     });
             }
+        },
+
+        getTime(){
+            let time = new Date;
+            
+            return time.getHours()+":"+time.getMinutes();
         }
     },
 
@@ -50,6 +58,7 @@ const app = createApp({
                 this.chat.message.push(e.message);
                 this.chat.user.push(e.user);
                 this.chat.color.push('warning');
+                this.chat.time.push(this.getTime());
             })
             .listenForWhisper('typing', (e) => {
                 if(e.name != ''){
