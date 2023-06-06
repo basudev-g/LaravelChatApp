@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
-Route::get('/send', [ChatController::class, 'send'])->name('send');
+Route::post('/send', [ChatController::class, 'send'])->name('send');
 
 Auth::routes();
 
