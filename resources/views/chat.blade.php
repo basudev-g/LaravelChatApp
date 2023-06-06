@@ -21,8 +21,9 @@
         <div class="row">
             <div class="col-4 offset-4">
                 <h1 class="bg-primary text-white p-2">Chat Room</h1>
+                <div class="badge badge-pill bg-primary">@{{typing}}</div>
                 <ul class="list-group">
-                    <message v-for="value in chat.message" color="success">
+                    <message v-for="value,index in chat.message" :key=value.index :color=chat.color[index] :user = chat.user[index]>
                         @{{value}}
                     </message>
                 </ul>
