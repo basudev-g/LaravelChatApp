@@ -1,6 +1,9 @@
 import './bootstrap';
 import '../sass/app.scss';
 import { createApp } from 'vue';
+import ToastPlugin from 'vue-toast-notification';
+// import {useToast} from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
 
 const app = createApp({
     data() {
@@ -13,6 +16,7 @@ const app = createApp({
                 time: [],
             },
             typing: '',
+            numberOfUsers: 0,
         }
     },
 
@@ -67,10 +71,36 @@ const app = createApp({
                     this.typing = '';
                 }
             });
+
+            Echo.join(`chat`)
+            .here((users) => {
+                this.numberOfUsers = users.length;
+                // console.log(users);
+            })
+            .joining((user) => {
+                this.numberOfUsers += 1;
+                this.$toast.success(user.name + ' joined in this chat room!', {
+                    duration: 4000,
+                });
+                // console.log(user.name);
+            })
+            .leaving((user) => {
+                this.numberOfUsers -= 1;
+                this.$toast.warning(user.name + ' leaved from this chat room!', {
+                    duration: 4000,
+                })
+                // console.log(user.name);
+            })
+            .error((error) => {
+                console.error(error);
+            });
     },
 });
 
 import Message from './components/Message.vue';
 app.component('message', Message);
+app.use(ToastPlugin, {
+    position: 'top-right',
+});
 
 app.mount('#app');
