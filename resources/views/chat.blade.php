@@ -22,12 +22,13 @@
             <div class="col-4 offset-4">
                 <p class="bg-primary text-white p-2">Chat Room  <small class="badge badge-pill bg-danger d-inline">@{{ numberOfUsers }}</small></p>
                 <div class="badge badge-pill bg-primary">@{{typing}}</div>
-                <ul class="list-group">
+                <ul class="list-group" ref="scroll">
                     <message v-for="value,index in chat.message" :key=value.index :color=chat.color[index] :user = chat.user[index] :time=chat.time[index]>
                         @{{value}}
                     </message>
                 </ul>
-                <input type="text" v-model="message" @keyup.enter="send" class="form-control" placeholder="Type your message here...">
+                <input type="text" v-model="message" @keyup.enter="send" class="form-control" placeholder="Type your message here..."><br>
+                <a href="" class="btn btn-sm btn-warning" @click.prevent="deleteChatHistory">Delete Chat</a>
             </div>
         </div>
     </div>

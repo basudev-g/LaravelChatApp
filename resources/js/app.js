@@ -1,4 +1,5 @@
 import './bootstrap';
+import axios from 'axios';
 import '../sass/app.scss';
 import { createApp } from 'vue';
 import ToastPlugin from 'vue-toast-notification';
@@ -38,9 +39,10 @@ const app = createApp({
                 this.chat.time.push(this.getTime());
                 axios.post('/send', {
                     message: this.message,
+                    chat: this.chat,
                 })
                     .then(response => {
-                        console.log(response);
+                        // console.log(response);
                         this.message = '';
                     })
                     .catch(error => {
@@ -53,16 +55,46 @@ const app = createApp({
             let time = new Date;
             
             return time.getHours()+":"+time.getMinutes();
-        }
+        },
+
+        deleteChatHistory(){
+            axios.post('/deleteChatHistory')
+            .then( response => {
+                this.$toast.warning('Chat history is deleted!');
+            });
+        },
+
+        getOldMessages(){
+            axios.post('/getOldMessages')
+            .then(response=>{
+                if(response.data != ''){
+                    this.chat = response.data;
+                }
+            })
+            .catch(error=>{
+                console.log(error);
+            });
+        },
+
+
     },
 
     mounted() {
+        this.getOldMessages();
         Echo.private('chat')
             .listen('.App\\Providers\\ChatEvent', (e) => {
                 this.chat.message.push(e.message);
                 this.chat.user.push(e.user);
                 this.chat.color.push('warning');
                 this.chat.time.push(this.getTime());
+
+                axios.post('/saveToSession', {chat: this.chat})
+                .then(response=>{
+                
+                })
+                .catch(error=>{
+                    console.log(error);
+                });
             })
             .listenForWhisper('typing', (e) => {
                 if(e.name != ''){
@@ -94,6 +126,8 @@ const app = createApp({
             .error((error) => {
                 console.error(error);
             });
+
+        this.$refs.scroll.scrollIntoView({ behavior: 'smooth', block: 'end' });
     },
 });
 
